@@ -52,6 +52,41 @@ describe Done::Task do
     end
   end
 
+  describe '#<=>' do
+    let(:doing) { Done::Task.new(name: 'task', type: Done::Task::Types::DOING) }
+    let(:blocked) { Done::Task.new(name: 'task', type: Done::Task::Types::BLOCKED) }
+    let(:todo) { Done::Task.new(name: 'task', type: Done::Task::Types::TODO) }
+    let(:done) { Done::Task.new(name: 'task', type: Done::Task::Types::DONE) }
+
+    it 'correctly compares against doing tasks' do
+      expect(doing <=> doing).to eq(0)
+      expect(blocked <=> doing).to eq(1)
+      expect(todo <=> doing).to eq(1)
+      expect(done <=> doing).to eq(1)
+    end
+
+    it 'correctly compares against blocked tasks' do
+      expect(doing <=> blocked).to eq(-1)
+      expect(blocked <=> blocked).to eq(0)
+      expect(todo <=> blocked).to eq(1)
+      expect(done <=> blocked).to eq(1)
+    end
+
+    it 'correctly compares against todo tasks' do
+      expect(doing <=> todo).to eq(-1)
+      expect(blocked <=> todo).to eq(-1)
+      expect(todo <=> todo).to eq(0)
+      expect(done <=> todo).to eq(1)
+    end
+
+    it 'correctly compares against done tasks' do
+      expect(doing <=> done).to eq(-1)
+      expect(blocked <=> done).to eq(-1)
+      expect(todo <=> done).to eq(-1)
+      expect(done <=> done).to eq(0)
+    end
+  end
+
   describe '.parse' do
     it 'correctly parses a task' do
       parsed_task = described_class.parse(task_s)

@@ -13,5 +13,6 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://done.sh'
   s.license     = 'MIT'
 
+  s.add_dependency 'thor', '~> 0.19.1'
   s.add_development_dependency 'rspec', '~> 3.4.0'
 end

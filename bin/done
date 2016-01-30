@@ -1,2 +1,11 @@
 #! /usr/bin/env ruby
-require 'done'
+
+require_relative '../lib/done'
+
+# Look for existing done config
+unless File.exist?(Done::CLI::CONFIG_FILE_PATH)
+  puts "Looks like it's the first time you've used done. Let's get you setup!\n"
+  ARGV << 'setup'
+end
+
+Done::CLI.start(ARGV)

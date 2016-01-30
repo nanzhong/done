@@ -15,7 +15,6 @@ describe Done::Renderers::Stack do
 
   subject(:renderer) { described_class.new(stack) }
 
-
   describe '#to_s' do
     it 'returns a string representation of the stack' do
       expect(renderer.to_s).to eq(tasks.map { |task| Done::Renderers::Task.new(task).to_s }.join("\n"))

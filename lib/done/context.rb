@@ -10,10 +10,10 @@ module Done
 
     attr_reader :stack, :version, :timestamp, :properties
 
-    def initialize(version, stack = Done::Stack.new, timestamp: Time.now, properties: {})
+    def initialize(version = Done::VERSION, stack = Done::Stack.new, timestamp: Time.now, properties: {})
       @stack = stack
       @version = version
-      @timestamp = timestamp
+      @timestamp = timestamp || Time.now
       @properties = properties
     end
 
@@ -51,7 +51,7 @@ module Done
           end
         end
 
-        stack = Done::Stack.parse(lines[:body] || '')
+        stack = Done::Stack.parse((lines[:body] || []).join("\n"))
 
         Context.new(version, stack, timestamp: timestamp, properties: properties)
       end

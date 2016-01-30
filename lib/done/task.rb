@@ -18,7 +18,7 @@ module Done
       NOTE      = /^\s*(.+)$/
     end
 
-    attr_accessor :name
+    attr_accessor :id, :name
     attr_reader :type, :timestamp, :notes, :properties
 
     def initialize(name:, type:, timestamp: Time.now, notes: [], properties: {})
@@ -33,12 +33,48 @@ module Done
       @timestamp = Time.now
     end
 
+    def start
+      @type = Types::DOING
+      touch
+    end
+
+    def block
+      @type = Types::BLOCKED
+      touch
+    end
+
+    def stop
+      @type = Types::TODO
+      touch
+    end
+
+    def finish
+      @type = Types::DONE
+      touch
+    end
+
     def ==(other)
       name == other.name &&
         type == other.type &&
         timestamp == other.timestamp &&
         properties == other.properties &&
         notes == other.notes
+    end
+
+    def <=>(other)
+      return 0 if type == other.type
+      return -1 if type == Types::DOING
+      return 1 if type == Types::DONE
+
+      if type == Types::BLOCKED
+        return 1 if other.type == Types::DOING
+        return -1
+      end
+
+      if type == Types::TODO
+        return 1 if [Types::DOING, Types::BLOCKED].include? other.type
+        return -1
+      end
     end
 
     class << self
