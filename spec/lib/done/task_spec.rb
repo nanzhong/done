@@ -151,4 +151,77 @@ describe Done::Task do
       end
     end
   end
+
+  describe '#short_padded_name' do
+    it 'pads short names with spaces' do
+      task.name = '*'
+
+      expect(task.short_padded_name).to eq('*' + ' ' * 49)
+    end
+
+    it 'truncates long names' do
+      task.name = '*' * 100
+
+      expect(task.short_padded_name).to eq('*' * 47 + '...')
+    end
+  end
+
+  describe '#start' do
+    it 'sets the task type to Types::DOING' do
+      # set task to a different type first since it's set to DOING to start
+      task.stop
+
+      expect do
+        task.start
+      end.to change { task.type }.to(described_class::Types::DOING)
+    end
+
+    it 'touches the task' do
+      expect(task).to receive(:touch).once
+
+      task.start
+    end
+  end
+
+  describe '#stop' do
+    it 'sets the task type to Types::DOING' do
+      expect do
+        task.stop
+      end.to change { task.type }.to(described_class::Types::TODO)
+    end
+
+    it 'touches the task' do
+      expect(task).to receive(:touch).once
+
+      task.stop
+    end
+  end
+
+  describe '#finish' do
+    it 'sets the task type to Types::DOING' do
+      expect do
+        task.finish
+      end.to change { task.type }.to(described_class::Types::DONE)
+    end
+
+    it 'touches the task' do
+      expect(task).to receive(:touch).once
+
+      task.finish
+    end
+  end
+
+  describe '#block' do
+    it 'sets the task type to Types::BLOCKED' do
+      expect do
+        task.block
+      end.to change { task.type }.to(described_class::Types::BLOCKED)
+    end
+
+    it 'touches the task' do
+      expect(task).to receive(:touch).once
+
+      task.block
+    end
+  end
 end

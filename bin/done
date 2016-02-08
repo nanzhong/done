@@ -9,3 +9,4 @@ unless File.exist?(Done::CLI::CONFIG_FILE_PATH)
 end
 
 Done::CLI.start(ARGV)
+Done::CLI.save

@@ -22,6 +22,10 @@ module Done
       @tasks.select { |task| task.type == type }
     end
 
+    def tasks_by_type
+      @tasks.group_by { |task| task.type }
+    end
+
     def add_task(name, properties = {}, notes = [])
       task = Done::Task.new(
         name: name,

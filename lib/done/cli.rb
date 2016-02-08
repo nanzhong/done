@@ -54,15 +54,11 @@ module Done
       }
 
       create_file(CONFIG_FILE_PATH, YAML.dump(config))
-
-      CLI.save
     end
 
     desc 'list', 'List aff of your tasks'
     def list
       say CLI.renderer.to_s(:list)
-
-      CLI.save
     end
 
     desc 'show [ID | TYPE]', 'Show your tasks'
@@ -74,8 +70,6 @@ module Done
       else
         say CLI.renderer.to_s(:show_task, target.to_i)
       end
-
-      CLI.save
     end
 
     desc 'add NAME', 'Add a task to your stack'
@@ -84,36 +78,26 @@ module Done
     def add(name)
       task = CLI.context.stack.add_task(name, options[:properties], options[:notes])
       show(task.id.to_s)
-
-      CLI.save
     end
 
     desc 'start ID', 'Start working on a task'
     def start(id)
       CLI.context.stack.start_task(id.to_i)
-
-      CLI.save
     end
 
     desc 'stop ID', 'Stop working on a task'
     def stop(id)
       CLI.context.stack.stop_task(id.to_i)
-
-      CLI.save
     end
 
     desc 'finish ID', 'Finish a task'
     def finish(id)
       CLI.context.stack.finish_task(id.to_i)
-
-      CLI.save
     end
 
     desc 'block ID', 'Block a task'
     def block(id)
       CLI.context.stack.block_task(id.to_i)
-
-      CLI.save
     end
   end
 end

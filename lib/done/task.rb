@@ -4,6 +4,8 @@ module Done
   class Task
     class ParseError < ArgumentError; end
 
+    SHORT_NAME_LENGTH = 50
+
     module Types
       DOING = '*'
       BLOCKED = '!'
@@ -29,8 +31,16 @@ module Done
       @properties = properties
     end
 
+    def short_padded_name
+      return name.ljust(SHORT_NAME_LENGTH) if name.length <= SHORT_NAME_LENGTH
+
+      name[0..96] + '...'
+    end
+
     def touch
       @timestamp = Time.now
+
+      self
     end
 
     def start
